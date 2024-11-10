@@ -22,7 +22,7 @@ class LinkApiController extends Controller
         ]);
 
         return response()->json([
-            'short_url' => url("/api/{$shortCode}")
+            'short_url' => "https://{$shortCode}"
         ], 201);
     }
 
