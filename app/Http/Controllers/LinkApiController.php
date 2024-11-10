@@ -25,4 +25,17 @@ class LinkApiController extends Controller
             'short_url' => url("/api/{$shortCode}")
         ], 201);
     }
+
+    public function redirect($shortCode)
+    {
+        $link = Link::where('short_code', $shortCode)->first();
+
+        if ($link) {
+            return response()->json([
+                'original_url' => $link->original_url
+            ]);
+        }
+
+        return response()->json(['message' => 'Link not found'], 404);
+    }
 }
