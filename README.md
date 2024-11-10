@@ -1,66 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Link Shortener
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A link-shortening application that allows users to create shortened, easy-to-remember links, similar to popular services like Bit.ly. The application is built using the Laravel framework on the backend and Vue.js on the frontend, providing a dynamic and responsive user interface.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Creating shortened links** – the user inputs a full URL, and the application generates a shorter, unique link..
+- **Storing links in the database** – each shortened link is saved in the database, allowing users to view a history of generated links.
+- **Redirecting to the full URL** – clicking on a shortened link redirects the user to the original, full URL.
+- **Displaying a list of shortened links** – the interface allows users to view all created links along with their original URLs.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technologies
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend**: Laravel – responsible for the application logic, database handling, and managing shortened links.
+- **Frontend**: Vue.js – provides a dynamic and user-friendly interface for interacting with the API.
+- **Database**: MySQL – used to store the original and shortened links.
 
-## Learning Laravel
+## API Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The application has several main endpoints:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **POST `/api/shorten`** – creates a new shortened link based on the original URL.
+- **GET `/api/{short_url}`** – redirects the user to the full URL based on the provided short code.
+- **GET `/api/links`** – returns a list of all created links.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Example Requests
 
-## Laravel Sponsors
+### 1. Creating a Shortened Link
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```html
+POST `/api/shorten`
+Content-Type: application/json
 
-### Premium Partners
+{
+  "original_url": "https://www.example.com"
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Example Response:
+```json
+{
+  "short_url": "http://skrocynyurl/abc123"
+}
+```
 
-## Contributing
+### 2. Redirect to Full URL
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```htm
+GET /api/{shorten}
+Content-Type: application/json
+```
 
-## Code of Conduct
+Example Response:
+```json
+{
+  "original_url": "https://www.example.com"
+}
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
 
-## Security Vulnerabilities
+### 3. Retrieve List of Links
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```htm
+GET /api/links
+Content-Type: application/json
+```
 
-## License
+Example Response:
+```json
+[
+  {
+    "id": 1,
+    "original_url": "https://www.example.com",
+    "short_code": "abc123",
+    "created_at": "2024-11-10",
+    "updated_at": "2024-11-10"
+  },
+]
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+```
+## Installation
+
+1. Clone the repository and navigate to the project directory.
+```html
+git clone https://github.com/MariuszMalankiewicz/link-shortener.git
+```
+
+2. Install PHP and JavaScript dependencies:
+```html
+composer install
+npm install
+```
+
+3. Configure the .env file and create the database.
+
+4. Run migrations to create the tables:
+```html
+php artisan migrate
+```
+
+5. Start the Laravel development server and the frontend compiler:
+```html
+php artisan serve
+npm run dev
+```
+
+6. Testing **(Optional)**
+To run tests:
+```html
+php artisan test
+```
+<br>
+The tests cover the functionality of creating shortened links, redirects, and displaying the list of links.
