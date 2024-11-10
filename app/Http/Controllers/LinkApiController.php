@@ -38,4 +38,11 @@ class LinkApiController extends Controller
 
         return response()->json(['message' => 'Link not found'], 404);
     }
+
+    public function index()
+    {
+        $links = Link::all();
+
+        return response()->json($links);
+    }
 }
